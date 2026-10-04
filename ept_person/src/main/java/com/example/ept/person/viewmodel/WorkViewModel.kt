@@ -48,8 +48,6 @@ class WorkViewModel(application: Application) : AndroidViewModel(application) {
                 lastItemId = params?.get("last_item_id") as? String ?: ""
                 materialJson = params?.get("material") as? String ?: ""
                 cardJSON = Gson().toJson(firstCard)
-                Log.d("测试mj",materialJson)
-                Log.d("测试cj",cardJSON)
 
                 _liveData.value = WorkState.InitState(result.items.toMutableList(),result.title.toString())
             } catch (e: Exception) {

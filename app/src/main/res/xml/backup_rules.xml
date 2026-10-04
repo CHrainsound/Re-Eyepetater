@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-   Sample backup rules file; uncomment and customize as necessary.
-   See https://developer.android.com/guide/topics/data/autobackup
-   for details.
-   Note: This file is ignored for devices older than API 31
-   See https://developer.android.com/about/versions/12/backup-restore
+   审查修复（P2-7）：自动备份已在 AndroidManifest 中关闭
+   （android:allowBackup="false"）——本 App 无用户本地数据。
+   如需恢复自动备份，请在此配置 include/exclude 而不是保持空模板全量备份。
 -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
 </full-backup-content>
