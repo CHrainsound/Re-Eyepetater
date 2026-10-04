@@ -1,0 +1,42 @@
+name: Android CI
+
+on:
+  push:
+    branches: [main, "fix/**"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: android-actions/setup-android@v3
+
+      - name: Router processor consistency check (P2-5)
+        run: |
+          # 引了 therouter-api 却没配 therouter.compiler 的模块会静默丢失路由，直接失败
+          fail=0
+          for f in $(find . -name build.gradle.kts -not -path './build/*'); do
+            if grep -q 'therouter-api\|libs.therouter.api' "$f"; then
+              if ! grep -q 'therouter-compiler\|libs.therouter.compiler' "$f"; then
+                echo "::error file=$f::引用 therouter-api 但缺少 ksp(libs.therouter.compiler)"
+                fail=1
+              fi
+            fi
+          done
+          exit $fail
+
+      - name: Dependency Updates
+        run: ./gradlew :app:dependencyUpdates -Drevision=release
+
+      - name: Vulnerability scan (OSV)
+        uses: google/osv-scanner-action@v2
+        with:
+          scan-args: -r .
+
+      - name: Build Release
+        run: ./gradlew :app:assembleRelease
