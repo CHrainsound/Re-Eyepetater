@@ -1,0 +1,41 @@
+Eyepetater 第三方通知（NOTICE）
+================================
+
+本项目（Eyepetater）使用以下第三方组件。依据各组件许可证要求，列出其名称、版本与许可：
+
+Apache License 2.0
+------------------------------------------------
+- Android Gradle Plugin 9.2.1（com.android.tools.build:gradle）
+- Kotlin / Kotlin Compose Compiler Plugin（org.jetbrains.kotlin）
+- KSP（com.google.devtools.ksp）
+- Gradle Wrapper（org.gradle）
+- AndroidX：appcompat, core-ktx, activity(-ktx/-compose), fragment-ktx,
+  lifecycle(-runtime/-viewmodel/-livedata)-ktx, constraintlayout,
+  coordinatorlayout, swiperefreshlayout, viewpager2, recyclerview(传递),
+  compose(-bom/ui/ui-graphics/ui-tooling/-preview/material3),
+  annotation(传递), test.ext:junit, espresso-core
+- com.google.android.material:material
+- com.squareup.okhttp3:okhttp / logging-interceptor
+- com.squareup.retrofit2:retrofit / converter-gson
+- com.google.code.gson:gson
+- io.github.carguo:gsyvideoplayer（含 gsyvideoplayer-java/exo2/ex_so）
+- cn.therouter:router / apt（HuolalaTech）
+- com.google.android.flexbox:flexbox
+- com.squareup.leakcanary:leakcanary-android（如后续启用）
+
+BSD / MIT / Apache-2.0 混合（Glide）
+------------------------------------------------
+- com.github.bumptech.glide:glide / compiler / okhttp3-integration
+  （Glide 源码分模块采用 BSD、MIT 与 Apache-2.0，详见 https://github.com/bumptech/glide/blob/master/LICENSE）
+
+Eclipse Public License 1.0
+------------------------------------------------
+- junit:junit（仅 test 作用域，不进入发布包）
+
+许可全文：
+- Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0.txt
+- MIT: https://opensource.org/licenses/MIT
+- BSD-2-Clause: https://opensource.org/licenses/BSD-2-Clause
+- EPL-1.0: https://www.eclipse.org/legal/epl-v10.html
+
+本仓库自身代码采用 MIT 许可（见根目录 LICENSE）。

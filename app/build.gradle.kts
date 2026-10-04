@@ -4,6 +4,14 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+// 签名材料从 keystore.properties（已被 .gitignore，禁止提交）读取；
+// 未提供该文件时跳过签名配置，普通构建不受影响。模板见 keystore.properties.example。
+val keystoreProps = java.util.Properties().apply {
+    val f = rootProject.file("keystore.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+val hasSigning = keystoreProps.getProperty("storeFile")?.isNotBlank() == true
+
 android {
     namespace = "com.example.eyepetater"
     compileSdk {
@@ -13,7 +21,9 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.eyepetater"
+        // 审查修复 P1-3：com.example.* 包名会被 Google Play 拒绝，改为自有标识；
+        // namespace 暂保持不变（包目录重命名作为独立迁移任务，见审查修复记录）。
+        applicationId = "com.scdomm.eyepetater"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
@@ -22,10 +32,24 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (hasSigning) {
+            create("release") {
+                storeFile = rootProject.file(keystoreProps.getProperty("storeFile"))
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            if (hasSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

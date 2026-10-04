@@ -8,9 +8,11 @@ pluginManagement {
             }
         }
         mavenCentral()
-        maven { url = uri("https://jitpack.io") }
-        maven { url = uri("https://maven.aliyun.com/repository/public") }
         gradlePluginPortal()
+        // 审查修复 P1-2：移除 jitpack 与 aliyun 镜像——当前依赖（含 GSYVideoPlayer）
+        // 均已验证存在于 Maven Central / Google Maven，无需按需编译源与第三方镜像。
+        // 若未来确有依赖仅在 jitpack 发布，请按 group 收敛添加，例如：
+        // maven { url = uri("https://jitpack.io"); content { includeGroup("com.example.only.jitpack") } }
     }
 }
 plugins {
@@ -21,7 +23,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://jitpack.io") }
+        // 同 P1-2：不再开放 jitpack（依赖来源收敛为 google + mavenCentral）。
+        // 需要时按上面的注释按 group 收敛恢复。
     }
 }
 
