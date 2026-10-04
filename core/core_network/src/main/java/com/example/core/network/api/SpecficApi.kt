@@ -1,6 +1,7 @@
-﻿package com.example.core.network.api
+package com.example.core.network.api
 
 import com.example.core.model.CallMetroListResponse
+import com.example.core.network.NetworkConfig.DeviceProfile
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -15,7 +16,7 @@ import retrofit2.http.Path
  */
 interface SpecficApi {
 
-    @GET("http://baobab.kaiyanapp.com/api/v3/lightTopics/internal/{topicId}")
+    @GET("https://baobab.kaiyanapp.com/api/v3/lightTopics/internal/{topicId}")
     fun getTopicDetailRaw(@Path("topicId") topicId: Int): Call<okhttp3.ResponseBody>
 
     @FormUrlEncoded
@@ -23,13 +24,13 @@ interface SpecficApi {
     fun getPageRaw(
         @Field("page_type") pageType: String = "card",
         @Field("page_label") pageLabel: String,
-        @Field("udid") udid: String = "275d0202c9e74b93a4d5c417f131cf8c",
-        @Field("vc") vc: String = "7090000",
-        @Field("vn") vn: String = "7.9.0",
-        @Field("deviceModel") deviceModel: String = "25019PNF3C",
-        @Field("first_channel") firstChannel: String = "huawei",
-        @Field("size") size: String = "1440X2971",
-        @Field("system_version_code") systemVersionCode: String = "36",
+        @Field("udid") udid: String = DeviceProfile.UDID,
+        @Field("vc") vc: String = DeviceProfile.VC,
+        @Field("vn") vn: String = DeviceProfile.VN,
+        @Field("deviceModel") deviceModel: String = DeviceProfile.DEVICE_MODEL,
+        @Field("first_channel") firstChannel: String = DeviceProfile.FIRST_CHANNEL,
+        @Field("size") size: String = DeviceProfile.SCREEN_SIZE,
+        @Field("system_version_code") systemVersionCode: String = DeviceProfile.SYSTEM_VERSION_CODE,
         @Field("token") token: String = ""
     ): Call<okhttp3.ResponseBody>
 
@@ -45,13 +46,13 @@ interface SpecficApi {
         @Field("page_label") pageLabel: String,
         @Field("card") card: String,
         @Field("data_source") dataSource: String,
-        @Field("udid") udid: String = "275d0202c9e74b93a4d5c417f131cf8c",
-        @Field("vc") vc: String = "7090000",
-        @Field("vn") vn: String = "7.9.0",
-        @Field("deviceModel") deviceModel: String = "25019PNF3C",
-        @Field("first_channel") firstChannel: String = "huawei",
-        @Field("size") size: String = "1440X2971",
-        @Field("system_version_code") systemVersionCode: String = "36",
+        @Field("udid") udid: String = DeviceProfile.UDID,
+        @Field("vc") vc: String = DeviceProfile.VC,
+        @Field("vn") vn: String = DeviceProfile.VN,
+        @Field("deviceModel") deviceModel: String = DeviceProfile.DEVICE_MODEL,
+        @Field("first_channel") firstChannel: String = DeviceProfile.FIRST_CHANNEL,
+        @Field("size") size: String = DeviceProfile.SCREEN_SIZE,
+        @Field("system_version_code") systemVersionCode: String = DeviceProfile.SYSTEM_VERSION_CODE,
         @Field("token") token: String = ""
     ): Call<okhttp3.ResponseBody>
 

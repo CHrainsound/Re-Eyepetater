@@ -1,20 +1,36 @@
 package com.example.core.network
 
-/**   
- * 包名称： com.example.core.network
- * 类名称：AuthHeader
- * 类描述：TODO
- * 创建人：韦西波
- * 创建时间：2026-07-23 11:03
+/**
+ * description ： 网络配置
  *
+ * 凭据不再硬编码：
+ * - X_API_KEY / X_THEFAIR_* / CLIENT_UA 的真实值由根目录 secrets.properties
+ *   （已被 .gitignore，禁止提交）经 BuildConfig 注入，参见 secrets.properties.example；
+ * - 曾经提交到公开仓库的旧凭据必须视为已泄露：先联系数据方吊销，再用新值填充本地文件；
+ * - 未提供 secrets.properties 时字段为空字符串，拦截器不会发送对应请求头。
  */
 object NetworkConfig {
     const val BASE_URL = "https://api.eyepetizer.net/"
-    const val X_API_KEY = "0530ee4341324ce2b26c23fcece80ea2"
-    const val X_THEFAIR_APPID = "ahpagrcrf2p7m6rg"
-    const val X_THEFAIR_AUTH = "uHkwPEjMsV9UKJZpLT1nWjdmiBnNMr9FTqll6Foa5WUQ9sidzNXqwNpRx2t4Xb5IbX4zkYvaTVIb2HuP1My7l0fh0u8bMwrUQOxd6B6yPTzdRsw2QA0n1uCOyqO8vyFBZQPjLgvyf7RjVplheFSbAhvMrDeyHejkkFHWSQgpHTTjb9+to9Z9yzDqJ6dqbuKbe0d6m3GtIY4/nAiPZt9dYSgHqeUlMAMEo4f8a8qqf/JD2kSAPl2a8JPPgTi0egnoOSpi+tHf8dVnZSl8zd0y1A=="
-    const val X_THEFAIR_CID = "12a50409f39708370d69ee9951505c2c"
-    const val X_THEFAIR_UA = "EYEPETIZER/7090000 (V2410A;android;15;zh_CN;android;7.9.0;cn-bj;huawei;12a50409f39708370d69ee9951505c2c;NONE;1080*2163) native/1.0"
-    const val USER_AGENT = "EYEPETIZER/7090000 (V2410A;android;15;zh_CN;android;7.9.0;cn-bj;huawei;12a50409f39708370d69ee9951505c2c;NONE;1080*2163) native/1.0"
-    const val COOKIE = "ky_udid=58d1cf919db5480fbf33d4e306642a4e;ky_auth=;APPID=ahpagrcrf2p7m6rg;PHPSESSID=80ed5e0c50935dc45cc7bc0182c33755"
+
+    val X_API_KEY: String get() = com.example.core.network.BuildConfig.X_API_KEY
+    val X_THEFAIR_APPID: String get() = com.example.core.network.BuildConfig.X_THEFAIR_APPID
+    val X_THEFAIR_AUTH: String get() = com.example.core.network.BuildConfig.X_THEFAIR_AUTH
+    val X_THEFAIR_CID: String get() = com.example.core.network.BuildConfig.X_THEFAIR_CID
+    val CLIENT_UA: String get() = com.example.core.network.BuildConfig.CLIENT_UA
+
+    /**
+     * 逆向取得的客户端请求参数。
+     *
+     * 注意（审查报告 P1-5）：API 数据来源合法性尚未解决，分发/上架前必须
+     * 取得授权或替换为自有/公开 API；这些参数不是密钥，但属于对原始客户端的模仿。
+     */
+    object DeviceProfile {
+        const val UDID = "275d0202c9e74b93a4d5c417f131cf8c"
+        const val VC = "7090000"
+        const val VN = "7.9.0"
+        const val DEVICE_MODEL = "25019PNF3C"
+        const val FIRST_CHANNEL = "huawei"
+        const val SCREEN_SIZE = "1440X2971"
+        const val SYSTEM_VERSION_CODE = "36"
+    }
 }

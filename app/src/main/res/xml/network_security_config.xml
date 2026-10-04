@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  审查修复（原 P0-2 明文传输）：
+  - API 已全部走 HTTPS（NetworkConfig.BASE_URL 与三处 baobab.kaiyanapp.com 端点均已切换）；
+  - 默认全局禁止明文（base-config），不再对 API 域开放 cleartext；
+  - 仅保留图片 CDN 的明文例外作历史 HTTP 图片兜底；
+    确认 img/ali-img/cdn.kaiyanapp.com 均返回 https 后，即可删除下面的 domain-config。
+-->
 <network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">baobab.kaiyanapp.com</domain>
         <domain includeSubdomains="true">img.kaiyanapp.com</domain>
         <domain includeSubdomains="true">ali-img.kaiyanapp.com</domain>
         <domain includeSubdomains="true">cdn.kaiyanapp.com</domain>
-    </domain-config>
-    <domain-config cleartextTrafficPermitted="false">
-        <domain includeSubdomains="true">images.unsplash.com</domain>
     </domain-config>
 </network-security-config>

@@ -16,6 +16,11 @@ build
 .externalNativeBuild
 .cxx
 local.properties
+# 本地密钥与签名材料（禁止提交，示例文件见 secrets.properties.example / keystore.properties.example）
+secrets.properties
+keystore.properties
+*.jks
+*.keystore
 .gradle/9.4.1/checksums/checksums.lock
 .gradle/9.4.1/checksums/sha1-checksums.bin
 .gradle/9.4.1/fileHashes/fileHashes.lock

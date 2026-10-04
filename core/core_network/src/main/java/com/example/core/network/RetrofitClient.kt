@@ -17,26 +17,26 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
     val gson = Gson()
 
+    /** 仅 debug 构建输出报文，release 一律 NONE，不再泄露请求/响应体与认证头。 */
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+        level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
     }
+
+    /** 附加客户端凭据；值为空（未配置 secrets.properties）时省略对应请求头，不发送空头。 */
     private val cookieInterceptor = Interceptor { chain ->
         val original = chain.request()
-        val newRequest = original.newBuilder()
-            .header("x-api-key", NetworkConfig.X_API_KEY)
-            .header("X-THEFAIR-APPID", NetworkConfig.X_THEFAIR_APPID)
-            .header("X-THEFAIR-AUTH", NetworkConfig.X_THEFAIR_AUTH)
-            .header("X-THEFAIR-CID", NetworkConfig.X_THEFAIR_CID)
-            .header("X-THEFAIR-UA", NetworkConfig.X_THEFAIR_UA)
-            .header("User-Agent", NetworkConfig.USER_AGENT)
-            .header("Cookie", NetworkConfig.COOKIE)
-            .build()
-        chain.proceed(newRequest)
+        val builder = original.newBuilder()
+        NetworkConfig.X_API_KEY.takeIf { it.isNotBlank() }?.let { builder.header("x-api-key", it) }
+        NetworkConfig.X_THEFAIR_APPID.takeIf { it.isNotBlank() }?.let { builder.header("X-THEFAIR-APPID", it) }
+        NetworkConfig.X_THEFAIR_AUTH.takeIf { it.isNotBlank() }?.let { builder.header("X-THEFAIR-AUTH", it) }
+        NetworkConfig.X_THEFAIR_CID.takeIf { it.isNotBlank() }?.let { builder.header("X-THEFAIR-CID", it) }
+        NetworkConfig.CLIENT_UA.takeIf { it.isNotBlank() }?.let { builder.header("User-Agent", it) }
+        chain.proceed(builder.build())
     }
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
-        .addInterceptor ( cookieInterceptor )
+        .addInterceptor(cookieInterceptor)
         .followRedirects(true)
         .followSslRedirects(true)
         .connectTimeout(30, TimeUnit.SECONDS)

@@ -31,7 +31,7 @@ class HotViewModel : ViewModel() {
     private var hasMore = true
 
     private fun buildUrl(strategy: String, start: Int, num: Int = 10): String {
-        return "http://baobab.kaiyanapp.com/api/v4/rankList/videos?strategy=$strategy&start=$start&num=$num"
+        return "https://baobab.kaiyanapp.com/api/v4/rankList/videos?strategy=$strategy&start=$start&num=$num"
     }
 
     fun loadHotVideos(strategy: String) {
