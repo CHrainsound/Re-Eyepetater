@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.core.model.MetroData
+import com.example.core.model.NavPaths
 import com.example.ept.search.R
 import com.therouter.TheRouter
 
@@ -50,7 +51,7 @@ class ResultUgcAdapter :
 
         fun bindData(metroData: MetroData) {
             itemView.setOnClickListener {
-                TheRouter.build("http://therouter.com/person")
+                TheRouter.build(NavPaths.PERSON)
                     .withString("uid",metroData.uid.toString())
                     .navigation()
             }

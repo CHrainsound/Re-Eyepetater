@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.core.network.RetrofitClient
 import com.example.core.network.api.UniversalApi
+import com.example.core.model.NavPaths
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.GSYVideoManager.backFromWindowFull
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
@@ -186,21 +187,15 @@ class VideoPlayerFragment : Fragment() {
 
     /**
      * 初始化相关推荐列表及点击跳转逻辑
+     *
+     * 审查修复：原实现绕过 VideoPlayerActivity 的 companion 工厂手工拼 10 个 extra，
+     * 而 onCreate 实际只读取 video_id / resource_type（其余 extra 从未被使用）；
+     * 现改走统一工厂方法，参数收敛到 videoId。
      */
     private fun initRelatedVideos() {
         relatedAdapter = RelatedVideoAdapter { item ->
             if (!isAdded) return@RelatedVideoAdapter
-            val intent = Intent(requireContext(), VideoPlayerActivity::class.java).apply {
-                putExtra(VideoPlayerActivity.EXTRA_VIDEO_ID, item.id.toString())
-                putExtra(VideoPlayerActivity.EXTRA_VIDEO_URL, item.playUrl)
-                putExtra(VideoPlayerActivity.EXTRA_VIDEO_TITLE, item.title)
-                putExtra(VideoPlayerActivity.EXTRA_VIDEO_COVER, item.coverUrl)
-                putExtra(VideoPlayerActivity.EXTRA_AUTHOR_NAME, item.authorName)
-                putExtra(VideoPlayerActivity.EXTRA_AUTHOR_ICON, item.authorIcon)
-                putExtra(VideoPlayerActivity.EXTRA_CATEGORY, item.category)
-                putExtra(VideoPlayerActivity.EXTRA_DESCRIPTION, item.description)
-            }
-            startActivity(intent)
+            VideoPlayerActivity.start(requireContext(), item)
         }
         rvRelated.layoutManager = LinearLayoutManager(requireContext())
         rvRelated.adapter = relatedAdapter
@@ -325,7 +320,7 @@ class VideoPlayerFragment : Fragment() {
 
     private fun navigateToAuthor() {
         if (!isAdded || authorUid.isEmpty()) return
-        com.therouter.TheRouter.build("http://therouter.com/person")
+        com.therouter.TheRouter.build(NavPaths.PERSON)
             .withString("uid", authorUid)
             .navigation()
     }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.core.media.VideoPlayerActivity
+import com.example.core.model.NavPaths
 import com.therouter.TheRouter
 
 class DailyFragment : Fragment() {
@@ -98,9 +99,9 @@ class DailyFragment : Fragment() {
     }
 
     fun initNotify() {
-        TheRouter.build("http://therouter.com/notify").navigation(view.context)
+        TheRouter.build(NavPaths.NOTIFY).navigation(view.context)
     }
     fun initSearch(){
-        TheRouter.build("http://therouter.com/search").navigation(view.context)
+        TheRouter.build(NavPaths.SEARCH).navigation(view.context)
     }
 }

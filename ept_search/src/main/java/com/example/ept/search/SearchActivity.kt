@@ -9,19 +9,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.core.model.NavPaths
 import com.example.ept.search.fragment.InitialFragment
 import com.example.ept.search.fragment.PreSearchFragment
 import com.example.ept.search.fragment.ResultFragment
 import com.example.ept.search.viewmodel.SearchState
 import com.example.ept.search.viewmodel.SearchViewModel
-import com.therouter.TheRouter
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
-@com.therouter.router.Route(path = "http://therouter.com/search")
+@com.therouter.router.Route(path = NavPaths.SEARCH)
 class SearchActivity : AppCompatActivity() {
     lateinit var viewModel: SearchViewModel
     private lateinit var svSearchTop: SearchView
@@ -42,7 +42,6 @@ class SearchActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         svSearchTop = findViewById(R.id.sv_search_top)
         tvSearchCancel = findViewById(R.id.tv_search_cancel)
-        TheRouter.init(this)
         initEvent()
         initSearch()
         initPreSearch()
@@ -138,11 +137,15 @@ class SearchActivity : AppCompatActivity() {
     //切换Fragment
     private fun switchTo(target: Fragment) {
         if (target != currentFragment) {
-            supportFragmentManager.beginTransaction()
-                .hide(currentFragment!!)
-                .show(target)
-                .commitNow()
-            currentFragment = target
+            // 审查修复：原 currentFragment!! 强解引用在进程恢复后可能为 null，改为安全解引用
+            val current = currentFragment
+            if (current != null) {
+                supportFragmentManager.beginTransaction()
+                    .hide(current)
+                    .show(target)
+                    .commitNow()
+                currentFragment = target
+            }
         }
     }
 

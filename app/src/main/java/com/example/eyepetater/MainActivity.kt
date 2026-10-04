@@ -49,7 +49,8 @@ class MainActivity : AppCompatActivity() {
 
         viewPager.isUserInputEnabled = false
 
-        viewPager.setCurrentItem(2, false)
+        // 审查修复：删除原 setCurrentItem(2, false)（与下方 selectedItemId = nav_home 矛盾，
+        // 造成初始位置多余的两次跳动）；默认从 position 0 开始，由底部导航统一切换。
     }
 
     private fun setupBottomNavigation() {

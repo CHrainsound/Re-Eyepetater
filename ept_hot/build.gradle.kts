@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -36,7 +37,8 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.glide)
-    annotationProcessor(libs.glide.compiler)
+    // 审查修复 P2-6：Glide 处理器由 annotationProcessor 统一改为 KSP。
+    ksp(libs.glide.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)

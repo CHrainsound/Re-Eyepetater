@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -38,8 +39,14 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.gson)
     implementation(libs.therouter.api)
-    annotationProcessor(libs.glide.compiler)
+    ksp(libs.therouter.compiler)
+    ksp(libs.glide.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+}
+
+ksp {
+    // 审查修复 P2-5/P2-6：补上缺失的 TheRouter 编译器，Glide 处理器统一为 KSP。
+    arg("therouter.moduleName", ":ept_dicover")
 }

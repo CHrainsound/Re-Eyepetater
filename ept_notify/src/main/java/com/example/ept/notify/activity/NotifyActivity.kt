@@ -15,9 +15,10 @@ import com.example.ept.notify.fragment.InfoFragment
 import com.example.ept.notify.fragment.InteractFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.example.core.model.NavPaths
 import com.therouter.router.Route
 
-@Route(path = "http://therouter.com/notify")
+@Route(path = NavPaths.NOTIFY)
 class NotifyActivity : AppCompatActivity() {
     private lateinit var vp2NotifyDefault: ViewPager2
     private lateinit var tlNotifyDefault: TabLayout

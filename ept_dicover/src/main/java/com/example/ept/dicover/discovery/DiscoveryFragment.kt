@@ -31,6 +31,7 @@ import com.example.ept.dicover.topicdetail.TopicDetailActivity
 import com.example.core.network.RetrofitClient
 import com.example.core.model.ApiRequest
 import com.example.ept.dicover.topicsquare.TopicSquareListActivity
+import com.example.core.model.NavPaths
 import com.therouter.TheRouter
 /**
  * description ： 发现页 Fragment，
@@ -71,10 +72,10 @@ class DiscoveryFragment : Fragment() {
         val ivSearch = view.findViewById<ImageView>(R.id.iv_daily_search)
 
         ivNotify.setOnClickListener {
-            TheRouter.build("http://therouter.com/notify").navigation(requireContext())
+            TheRouter.build(NavPaths.NOTIFY).navigation(requireContext())
         }
         ivSearch.setOnClickListener {
-            TheRouter.build("http://therouter.com/search").navigation(requireContext())
+            TheRouter.build(NavPaths.SEARCH).navigation(requireContext())
         }
 
         // 分类

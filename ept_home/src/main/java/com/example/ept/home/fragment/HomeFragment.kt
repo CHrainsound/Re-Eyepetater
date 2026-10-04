@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.core.media.VideoPlayerActivity
+import com.example.core.model.NavPaths
 import com.example.ept.home.R
 import com.example.ept.home.adapter.HomeAdapter
 import com.example.ept.home.viewmodel.HomeState
@@ -46,7 +47,7 @@ class HomeFragment : Fragment() {
         rvHomeDefault.layoutManager = LinearLayoutManager(requireContext())
         rvHomeDefault.adapter = adapter
         ivHomeNotify.setOnClickListener {
-            TheRouter.build("http://therouter.com/notify")
+            TheRouter.build(NavPaths.NOTIFY)
                 .navigation(view.context)
         }
         viewModel.liveData.observe(viewLifecycleOwner) { state ->

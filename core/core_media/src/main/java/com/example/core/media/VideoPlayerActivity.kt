@@ -45,6 +45,19 @@ class VideoPlayerActivity : AppCompatActivity() {
             }
             context.startActivity(intent)
         }
+
+        /**
+         * 相关推荐等场景的统一入口（审查修复）：
+         * 页面数据由 onCreate 通过 API 重新拉取，此处只传 videoId，
+         * 不再手工拼接 10 个从未被读取的 extra。
+         */
+        fun start(context: Context, item: RelatedVideoAdapter.RelatedVideoItem) {
+            val intent = Intent(context, VideoPlayerActivity::class.java).apply {
+                putExtra(EXTRA_VIDEO_ID, item.id.toString())
+                putExtra(EXTRA_RESOURCE_TYPE, "pgc_video")
+            }
+            context.startActivity(intent)
+        }
     }
 
     private val api = RetrofitClient.create<UniversalApi>()

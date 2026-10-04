@@ -23,10 +23,12 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.example.core.model.NavPaths
+import com.therouter.TheRouter
 import com.therouter.router.Autowired
 import com.therouter.router.Route
 
-@Route(path = "http://therouter.com/person", params = ["uid", "000000000"])
+@Route(path = NavPaths.PERSON, params = ["uid", "000000000"])
 class PersonActivity : AppCompatActivity() {
     private lateinit var aplCreatorDefault: AppBarLayout
     private lateinit var ivCreatorBack: ImageView
@@ -68,7 +70,10 @@ class PersonActivity : AppCompatActivity() {
         vp2CreatorDefault = findViewById(R.id.vp2_creator_default)
         tlCreatorDefault = findViewById(R.id.tl_creator_default)
         creatorViewModel = ViewModelProvider(this)[CreatorViewModel::class.java]
-        uid = intent.getStringExtra("uid") ?: "000000000"
+        // 审查修复：@Autowired 字段原本只声明未 inject，靠 intent.getStringExtra 兜底；
+        // 现在显式调用 TheRouter.inject 完成路由参数注入，未注入时回退默认值。
+        TheRouter.inject(this)
+        if (!this::uid.isInitialized) uid = "000000000"
         creatorViewModel.initCreator(uid)
 
         ivCreatorBack.setOnClickListener {
